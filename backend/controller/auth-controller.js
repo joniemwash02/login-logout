@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { generateJWTToken } from "../utils/generateJWTToken.js";
 import { generateVerificationToken } from "../utils/generateVerificationToken.js";
-import { sendwelcomeEmail, verificationEmail } from "../resend/email.js";
+import { sendPasswordResetEmail, sendwelcomeEmail, verificationEmail } from "../resend/email.js";
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -143,7 +143,11 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpireAt = resetPasswordExpireAt;
     await user.save();
     // Here, you would typically send the resetPasswordToken to the user's email address.
-    await sendPasswordResetEmail( resetPasswordToken);
+    await sendPasswordResetEmail( `${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}`);
+    res.status(200).json({
+      success: true,
+      message: "Password reset email sent",
+    });
   } catch (error) {
     res
       .status(500)
