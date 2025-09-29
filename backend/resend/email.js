@@ -52,4 +52,16 @@ export const sendPasswordResetEmail = async ( resetURL) => {
 
 
 }
-
+export const sendResetSuccessEmail = async ( name) => {
+  try {
+    const { data, error } = await resend.emails.send({
+      from: "Acme <onboarding@resend.dev>",
+      to: ["joniemwash2@gmail.com"],
+      subject: "Password Reset Successful",
+      html: `<p>Hello ${name},</p><p>Your password has been reset successfully.</p>`,
+    });
+  } catch (error) {
+    console.error("Error sending password reset success email:", error);
+    throw new Error("Failed to send password reset success email");
+  }
+};

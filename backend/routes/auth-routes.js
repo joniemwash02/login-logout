@@ -1,14 +1,24 @@
-import express from "express"
-import { forgotPassword, login, logout, signup, verifyEmail } from "../controller/auth-controller.js"
+import express from "express";
+import {verifyToken} from "../middleware/verifyToken.js"
+import {
+  forgotPassword,
+  login,
+  logout,
+  resetPassword,
+  signup,
+  verifyEmail,
+  checkAuth
+} from "../controller/auth-controller.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/signup", signup)
-router.post("/verify-email", verifyEmail)
+router.post("/signup", signup);
+router.post("/verify-email", verifyEmail);
 
-router.post("/login", login)
-router.post("/logout", logout)
-router.post("/forgot-password", forgotPassword)
+router.post("/login", login);
+router.post("/logout", logout);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
+router.get("/check-auth", verifyToken, checkAuth);
 
-
-export default router
+export default router;
