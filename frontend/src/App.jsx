@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import Signup from "./pages/Signup";
@@ -18,7 +18,19 @@ const ProtectRoute = ({ children }) => {
   if (!isAuthenticated && !user) {
     return <Navigate to="/login" replace />;
   }
+   
+  return children;
+};
+const AuthenticatedUserRoute=({children})=>{
+  const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
 
+  if (isCheckingAuth) {
+    return <LoadingPage />;
+  }
+
+  if (isAuthenticated && user) {
+    return <Navigate to="/dashboard" replace />;
+  }
   return children;
 };
 
@@ -32,15 +44,18 @@ const App = () => {
   if (isCheckingAuth) {
     return <LoadingPage />;
   }
+  
 
   return (
     <>
       <Navbar />
+
       <Routes>
         <Route path="/" element={<h1>Welcome to the App</h1>} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<AuthenticatedUserRoute><Signup /></AuthenticatedUserRoute>} />
+        <Route path="/login" element={<AuthenticatedUserRoute><LoginPage /></AuthenticatedUserRoute>} />
         <Route path="/verify-email" element={<VerificationEmailPage />} />
+        
         <Route
           path="/dashboard"
           element={

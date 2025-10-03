@@ -86,7 +86,7 @@ const VerificationEmailPage = () => {
       </div>
 
       {/* Toast container */}
-      <ToastContainer />
+    
     </div>
   );
 };

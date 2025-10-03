@@ -20,7 +20,7 @@ export default function LoginPage() {
     e.preventDefault();
     const success = await login(email, password);
     if (success) {
-       toast.success("Email verified successfully, You can now login!", { position: "top-right" });
+       toast.success("Login successful!", { position: "top-right" });
       navigate("/");
     }
   };
@@ -64,7 +64,7 @@ export default function LoginPage() {
           Don’t have an account? <a href="/signup">Sign up</a>
         </p>
       </div>
-      <ToastContainer />
+     
     </div>
   );
 }

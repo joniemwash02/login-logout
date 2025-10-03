@@ -143,6 +143,32 @@ const useAuthStore = create((set) => ({
       });
     }
   },
+  logout: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await fetch(`${API_URL}/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+      set({
+        isLoading: false,
+        isAuthenticated: false,
+        user: null,
+      });
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.message,
+      });
+    }
+  },
 }));
 
 export default useAuthStore;

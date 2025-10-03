@@ -84,7 +84,7 @@ export default function Signup() {
       </div>
 
       {/* Toast container for showing notifications */}
-      <ToastContainer />
+  
     </div>
   );
 }

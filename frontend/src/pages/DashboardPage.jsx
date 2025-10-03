@@ -1,10 +1,14 @@
-import React from 'react'
-
+import React from "react";
+import useAuthStore from "../store/authStore";
 const DashboardPage = () => {
-  return (
-    <h1>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus unde vel, sed quis natus ut possimus nihil quos eveniet molestias adipisci quaerat doloremque aliquam? Recusandae aliquam officiis et officia aliquid?
-    </h1>
-  )
-}
+  const { user } = useAuthStore();
 
-export default DashboardPage
+  return (
+    <>
+      <h1>Welcome to your dashboard, {user.name}!</h1>
+      <p>Your email: {user.email}</p>
+    </>
+  );
+};
+
+export default DashboardPage;
