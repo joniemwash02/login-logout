@@ -1,14 +1,31 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import useAuthStore from "../store/authStore";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 export default function LoginPage() {
   // State for email and password
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login, isLoading, error } = useAuthStore();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+      if (error) {
+        toast.error(error, { position: "top-right" });
+      }
+    }, [error]);
+
 
   // Handle login submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log("Login Data:", { email, password });
+    await login(email, password);
+
+
+
+
+
+    navigate("/");
     // Replace console.log with your API/auth request
   };
 
@@ -40,7 +57,10 @@ export default function LoginPage() {
           </div>
 
           <button type="submit" className="login-btn">
-            Sign In
+            {isLoading ? "Logging in..." : "Login"}
+          </button>
+          <button type="button" className="forgot-password-btn">
+            Forgot Password?
           </button>
         </form>
 
@@ -48,6 +68,7 @@ export default function LoginPage() {
           Don’t have an account? <a href="/signup">Sign up</a>
         </p>
       </div>
+      <ToastContainer />
     </div>
   );
 }

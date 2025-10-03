@@ -1,16 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useAuthStore from "../store/authStore.js";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Signup() {
-  // State for form fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { signup, isLoading, error, user } = useAuthStore();
+  const navigate = useNavigate();
 
-  // Handle submit
-  const handleSubmit = (e) => {
+  // Show error toast whenever `error` updates
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: "top-right" });
+    }
+  }, [error]);
+
+  // Show success toast when user is signed up
+  useEffect(() => {
+    if (user) {
+      toast.success("Signup successful! Please verify your email.", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+
+      // Delay navigation so user can see the toast
+      const timer = setTimeout(() => {
+        navigate("/verify-email");
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [user, navigate]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", { name, email, password });
-    // you can send data to backend here
+    await signup(name, email, password);
   };
 
   return (
@@ -48,14 +74,17 @@ export default function Signup() {
               required
             />
           </div>
-          <button type="submit" className="login-btn">
-            Sign Up
+          <button type="submit" className="login-btn" disabled={isLoading}>
+            {isLoading ? "Signing Up..." : "Sign Up"}
           </button>
         </form>
         <p className="signup-text">
           Already have an account? <a href="/login">Login</a>
         </p>
       </div>
+
+      {/* Toast container for showing notifications */}
+      <ToastContainer />
     </div>
   );
 }

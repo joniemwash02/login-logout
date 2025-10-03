@@ -177,3 +177,105 @@ html, body {
     margin: 0.5rem 0;
   }
 }
+
+
+.error-text {
+  color: #d32f2f;
+  background: #fdecea;
+  border: 1px solid #f44336;
+  padding: 8px 12px;
+  margin: 10px 0;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-align: left;
+}
+/* Background */
+.verify-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #16a34a, #2563eb);
+  font-family: Arial, sans-serif;
+}
+
+/* Card */
+.verify-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+  width: 360px;
+  text-align: center;
+}
+
+/* Title */
+.verify-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+/* Subtitle */
+.verify-subtitle {
+  font-size: 0.95rem;
+  color: #4a5568;
+  margin-bottom: 1.5rem;
+}
+
+/* Code Inputs */
+.code-inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.code-inputs input {
+  width: 45px;
+  height: 50px;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 1px solid #cbd5e0;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.code-inputs input:focus {
+  border-color: #2563eb;
+}
+
+/* Button */
+.verify-btn {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.verify-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Resend link */
+.resend-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.resend-text a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.resend-text a:hover {
+  text-decoration: underline;
+}
