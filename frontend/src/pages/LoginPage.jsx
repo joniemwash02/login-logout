@@ -8,25 +8,21 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const { login, isLoading, error } = useAuthStore();
   const navigate = useNavigate();
-  
-  useEffect(() => {
-      if (error) {
-        toast.error(error, { position: "top-right" });
-      }
-    }, [error]);
 
+  useEffect(() => {
+    if (error) {
+      toast.error(error, { position: "top-right" });
+    }
+  }, [error]);
 
   // Handle login submit
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await login(email, password);
-
-
-
-
-
-    navigate("/");
-    // Replace console.log with your API/auth request
+    const success = await login(email, password);
+    if (success) {
+       toast.success("Email verified successfully, You can now login!", { position: "top-right" });
+      navigate("/");
+    }
   };
 
   return (

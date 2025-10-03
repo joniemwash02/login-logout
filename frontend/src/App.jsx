@@ -1,11 +1,38 @@
-import React from 'react';
-import LoginPage from './pages/LoginPage';
-import Signup from './pages/Signup';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './pages/Navbar';
-import VerificationEmailPage from './pages/VerificationEmailPage';  
+import React, { useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import Signup from "./pages/Signup";
+import Navbar from "./pages/Navbar";
+import VerificationEmailPage from "./pages/VerificationEmailPage";
+import useAuthStore from "./store/authStore";
+import LoadingPage from "./pages/LoadingPage";
+import DashboardPage from "./pages/DashboardPage";
+
+const ProtectRoute = ({ children }) => {
+  const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
+
+  if (isCheckingAuth) {
+    return <LoadingPage />;
+  }
+
+  if (!isAuthenticated && !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
 
 const App = () => {
+  const { checkAuth, isCheckingAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, []); // ✅ only run once
+
+  if (isCheckingAuth) {
+    return <LoadingPage />;
+  }
+
   return (
     <>
       <Navbar />
@@ -14,6 +41,14 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-email" element={<VerificationEmailPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectRoute>
+              <DashboardPage />
+            </ProtectRoute>
+          }
+        />
       </Routes>
     </>
   );

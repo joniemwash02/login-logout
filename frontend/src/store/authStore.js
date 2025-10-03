@@ -73,35 +73,76 @@ const useAuthStore = create((set) => ({
       });
     }
   },
-  login: async (email, password)=>{
-    set({ isLoading: true, error: null })
+  login: async (email, password) => {
+    set({ isLoading: true, error: null });
     try {
-      const response =await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({ email, password }),
-      })
+      });
+
       const data = await response.json();
-      if(!response.ok){
+
+      if (!response.ok) {
+        // Handle wrong credentials or server errors
         throw new Error(data.message || "Login failed");
       }
+
       set({
         isLoading: false,
         isAuthenticated: true,
         user: data.user,
       });
-      
+
+      return true; // return success so you can navigate after
     } catch (error) {
       set({
         isLoading: false,
         error: error.message,
         isAuthenticated: false,
       });
+      return false; // return failure
     }
-  }
+  },
+
+  checkAuth: async () => {
+    set({ isCheckingAuth: true, error: null });
+    try {
+      const response = await fetch(`${API_URL}/check-auth`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.user) {
+        set({
+          user: data.user,
+          isAuthenticated: true,
+          isCheckingAuth: false,
+        });
+      } else {
+        set({
+          user: null,
+          isAuthenticated: false,
+          isCheckingAuth: false,
+        });
+      }
+    } catch (error) {
+      set({
+        user: null,
+        isAuthenticated: false,
+        isCheckingAuth: false, // ✅ make sure to stop the checking state
+        isLoading: false,
+        error: error.message,
+      });
+    }
+  },
 }));
 
 export default useAuthStore;
